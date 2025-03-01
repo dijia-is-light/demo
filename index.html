@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To My Love ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #fce7f3, #fda4af);
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* 自定义鼠标样式 */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e11d48;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            transition: transform 0.1s;
+        }
+
+        .cursor-follower {
+            width: 8px;
+            height: 8px;
+            background: #e11d48;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            transition: transform 0.15s;
+        }
+
+        /* 主容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* 音乐控制按钮 */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        /* 消息卡片样式 */
+        .message-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards;
+        }
+
+        .message-text {
+            font-size: 2.5rem;
+            color: #e11d48;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        /* 照片墙样式 */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            transform: scale(1);
+            transition: transform 0.3s;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 漂浮的心形 */
+        .floating-heart {
+            position: absolute;
+            color: rgba(225, 29, 72, 0.3);
+            animation: float 3s infinite ease-in-out;
+        }
+
+        /* 动画关键帧 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* 滚动提示 */
+        .scroll-indicator {
+            text-align: center;
+            margin-top: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .message-text {
+                font-size: 1.8rem;
+            }
+
+            .cursor, .cursor-follower {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 自定义鼠标 -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- 音乐控制 -->
+    <button class="music-control" id="musicControl">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="21" cy="16" r="3"></circle>
+        </svg>
+    </button>
+
+    <div class="container">
+        <!-- 消息卡片 -->
+        <div class="message-card">
+            <h1 class="message-text" id="message"></h1>
+        </div>
+
+        <!-- 照片墙 -->
+        <div class="photo-gallery">
+            <div class="photo-item">
+                <img src="https://picsum.photos/300/300" alt="Memory 1">
+            </div>
+            <div class="photo-item">
+                <img src="https://picsum.photos/301/301" alt="Memory 2">
+            </div>
+            <div class="photo-item">
+                <img src="https://picsum.photos/302/302" alt="Memory 3">
+            </div>
+            <div class="photo-item">
+                <img src="https://picsum.photos/303/303" alt="Memory 4">
+            </div>
+            <div class="photo-item">
+                <img src="https://picsum.photos/304/304" alt="Memory 5">
+            </div>
+            <div class="photo-item">
+                <img src="https://picsum.photos/305/305" alt="Memory 6">
+            </div>
+        </div>
+
+        <!-- 滚动提示 -->
+        <div class="scroll-indicator">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // 消息数组
+        const messages = [
+            "亲爱的...",
+            "从遇见你的第一天起",
+            "你就像星星一样闪耀在我的生命里",
+            "我想告诉你...",
+            "我爱你 ❤️"
+        ];
+
+        let currentMessage = 0;
+        const messageElement = document.getElementById('message');
+
+        // 文字切换效果
+        function showNextMessage() {
+            if (currentMessage < messages.length) {
+                messageElement.style.opacity = '0';
+                setTimeout(() => {
+                    messageElement.textContent = messages[currentMessage];
+                    messageElement.style.opacity = '1';
+                    
+                    // 在最后一条消息时触发礼花效果
+                    if (currentMessage === messages.length - 1) {
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                    }
+                    
+                    currentMessage++;
+                }, 500);
+            }
+        }
+
+        // 初始显示第一条消息
+        showNextMessage();
+        // 设置消息切换间隔
+        setInterval(showNextMessage, 2000);
+
+        // 背景音乐控制
+        const musicControl = document.getElementById('musicControl');
+        const audio = new Audio('path-to-your-music.mp3'); // 替换为你的音乐文件路径
+        audio.loop = true;
+
+        let isPlaying = false;
+        musicControl.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // 自定义鼠标效果
+        const cursor = document.getElementById('cursor');
+        const cursorFollower = document.getElementById('cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(${e.clientX - 10}px, ${e.clientY - 10}px, 0)`;
+            cursorFollower.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
+        });
+
+        // 创建漂浮的心形
+        function createFloatingHearts() {
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        createFloatingHearts();
+    </script>
+</body>
+</html>
